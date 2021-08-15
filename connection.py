@@ -10,7 +10,14 @@ if mt5.initialize():
 else:
     print('Login error', mt5.last_error())
 
-print(mt5.terminal_info())
+print(mt5.terminal_info()._asdict())
 print(mt5.version())
+
+d = mt5.account_info()._asdict()
+
+if d['server'] == 'ICMarketsSC-Demo':
+    print('Server OK')
+else:
+    print('Wrong server')
 
 mt5.shutdown()
