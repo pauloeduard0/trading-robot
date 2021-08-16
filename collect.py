@@ -31,4 +31,10 @@ if info != None:
 else:
     print('Not found', active2)
 
+active3 = 'XAGUSD'
+info1 = mt5.symbol_info(active3)
 
+print('Market observation:', info1.select)
+
+# Add assets in market watch
+selection = mt5.symbol_select(active3, True)
