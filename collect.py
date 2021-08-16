@@ -38,3 +38,6 @@ print('Market observation:', info1.select)
 
 # Add assets in market watch
 selection = mt5.symbol_select(active3, True)
+
+# Remove assets on market watch
+selection1 = mt5.symbol_select(active3, False)
