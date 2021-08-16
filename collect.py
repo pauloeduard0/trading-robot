@@ -5,20 +5,30 @@ if mt5.initialize():
 else:
     print('Login error')
 
-n_ativos = mt5.symbols_total()
+n_active = mt5.symbols_total()
 
-print(n_ativos)
+print(n_active)
 
-ativos = mt5.symbols_get()
+active = mt5.symbols_get()
 
-print(type(ativos))
+print(type(active))
 
-print(type(ativos[0]))
+print(type(active[0]))
 
-print(ativos[0]._asdict())
+print(active[0]._asdict())
 
-print(ativos[0].name)
+print(active[0].name)
 
-for i in ativos:
-    print(i.name)
+active1 = 'USDJPY'
+
+print(mt5.symbol_info(active1)._asdict())
+
+active2 = 'XYXYX'
+info = mt5.symbol_info(active2)
+
+if info != None:
+    print(info)
+else:
+    print('Not found', active2)
+
 
