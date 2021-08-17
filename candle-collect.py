@@ -3,8 +3,8 @@ import pandas as pd
 import time
 from datetime import datetime
 import pytz
-
-import pytz
+import cufflinks as cf
+import plotly
 
 
 def timestamptodate(df):
@@ -80,3 +80,15 @@ c3 = pd.DataFrame(c3)
 c3 = timestamptodate(c3)
 
 print(c3)
+
+'''
+jupyter notebook:
+
+pip install cufflinks
+
+cf.set_config_file(offline=True)
+
+c3.set_index('time', inplace=True)
+c3.iplot(kind='candle')
+
+'''
