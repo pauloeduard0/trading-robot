@@ -23,7 +23,7 @@ if not ok:
     mt5.shutdown()
 
 '''
-copu_rates_from(
+copy_rates_from(
     symbol,
     timeframe, 
     date_from,
@@ -38,3 +38,20 @@ df = pd.DataFrame(c)
 dt = timestamptodate(df)
 
 print(dt)
+
+'''
+copy_rates_from_pos(
+    symbol,
+    timeframe, 
+    start_pos, // initial bar number
+    count
+    )
+'''
+
+c2 = mt5.copy_rates_from_pos(active, mt5.TIMEFRAME_D1, 0, 40)
+
+c2 = pd.DataFrame(c2)
+
+c2 = timestamptodate(c2)
+
+print(c2)
