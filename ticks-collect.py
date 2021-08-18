@@ -11,6 +11,13 @@ def timestamptodate(df):
     df['time'] = pd.to_datetime(df['time'], unit='s')
     return df
 
+
+def timestamptodate_ticks(df):
+    df['time'] = pd.to_datetime(df['time'], unit='s')
+    df['time_msc'] = pd.to_datetime(df['time_msc'], unit='ms')
+    return df
+
+
 if mt5.initialize():
     print('Login sucess')
 else:
@@ -28,3 +35,20 @@ lasttick = mt5.symbol_info_tick(active)
 
 print(lasttick._asdict())
 
+today = datetime.now()
+
+'''
+copy_ticks_from(
+    symbol,
+    date_from, 
+    count,
+    flags
+    )
+'''
+
+ticks = mt5.copy_ticks_from(active, today, 50, mt5.COPY_TICKS_INFO)
+
+ticks = pd.DataFrame(ticks)
+ticks = timestamptodate_ticks(ticks)
+
+print(ticks)
