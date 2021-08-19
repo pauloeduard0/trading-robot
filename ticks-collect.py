@@ -52,3 +52,9 @@ ticks = pd.DataFrame(ticks)
 ticks = timestamptodate_ticks(ticks)
 
 print(ticks)
+
+filter1 = ticks['flags'] == mt5.TICK_FLAG_BID
+filter2 = ticks['volume'] >= 400
+
+print(ticks.loc[filter1, :])
+print(ticks.loc[filter2, :])
