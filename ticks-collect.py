@@ -78,4 +78,10 @@ ticks2 = mt5.copy_ticks_range(active, utc_from, utc_to, mt5.COPY_TICKS_ALL)
 ticks2 = pd.DataFrame(ticks2)
 ticks2 = timestamptodate_ticks(ticks2)
 
-print(ticks2)
+# print(ticks2)
+
+while True:
+    last = mt5.symbol_info_tick(active)
+    print(last.ask)
+    time.sleep(1)
+
