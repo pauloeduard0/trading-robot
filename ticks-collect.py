@@ -33,7 +33,7 @@ if not ok:
 
 lasttick = mt5.symbol_info_tick(active)
 
-print(lasttick._asdict())
+# print(lasttick._asdict())
 
 today = datetime.now()
 
@@ -51,10 +51,31 @@ ticks = mt5.copy_ticks_from(active, today, 50, mt5.COPY_TICKS_INFO)
 ticks = pd.DataFrame(ticks)
 ticks = timestamptodate_ticks(ticks)
 
-print(ticks)
+# print(ticks)
 
 filter1 = ticks['flags'] == mt5.TICK_FLAG_BID
 filter2 = ticks['volume'] >= 400
 
-print(ticks.loc[filter1, :])
-print(ticks.loc[filter2, :])
+# print(ticks.loc[filter1, :])
+# print(ticks.loc[filter2, :])
+
+'''
+copy_ticks_range(
+    symbol,
+    date_from, 
+    date_to,
+    flags
+    )
+'''
+
+timezone = pytz.timezone("Etc/UTC")
+
+utc_from = datetime(2021, 7, 15, hour=10, tzinfo=timezone)
+utc_to = datetime(2021, 7, 15, hour=16, tzinfo=timezone)
+
+ticks2 = mt5.copy_ticks_range(active, utc_from, utc_to, mt5.COPY_TICKS_ALL)
+
+ticks2 = pd.DataFrame(ticks2)
+ticks2 = timestamptodate_ticks(ticks2)
+
+print(ticks2)
