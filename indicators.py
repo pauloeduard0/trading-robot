@@ -6,6 +6,7 @@ from datetime import datetime
 import pytz
 import cufflinks as cf
 import plotly
+import matplotlib.pyplot as plt
 
 
 def timestamptodate(df):
@@ -32,13 +33,31 @@ if not ok:
     print("Asset addition failed ", active)
     mt5.shutdown()
 
-d = mt5.copy_rates_from_pos(active, mt5.TIMEFRAME_D1, 0, 40)
+d = mt5.copy_rates_from_pos(active, mt5.TIMEFRAME_M5, 0, 100)
 d = pd.DataFrame(d)
 d = timestamptodate(d)
 
 print(d.ta.indicators())
 
-print(help(ta.rsi))
-print(help(ta.bbands))
+# print(help(ta.rsi))
+# print(help(ta.bbands))
+# print(help(ta.sma))
+
+# Simple
+sma21 = ta.sma(d["close"], length=21)
+sma51 = ta.sma(d["open"], length=50)
+
+# Exponetial
+ema10 = ta.ema(d["close"])
+
+# print(sma21)
+
+sma21.plot()
+ema10.plot()
+d['close'].plot()
+plt.legend(['MMS 21', 'MM 10', 'Closes'])
+plt.xlabel('Data')
+plt.ylabel("Preço")
+plt.show()
 
 
