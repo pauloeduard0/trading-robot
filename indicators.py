@@ -36,6 +36,7 @@ if not ok:
 d = mt5.copy_rates_from_pos(active, mt5.TIMEFRAME_M5, 0, 50)
 d = pd.DataFrame(d)
 d = timestamptodate(d)
+d.set_index('time', inplace=True)
 
 print(d)
 
@@ -56,14 +57,24 @@ ema10 = ta.ema(d["close"])
 
 sma21.plot()
 ema10.plot()
+
 d['close'].plot()
 plt.legend(['MMS 21', 'MM 10', 'Closes'])
 plt.xlabel('Data')
 plt.ylabel("Preço")
-plt.show()
+plt.figure()
 
 # indexing date
 # d.set_index('time', inplace=True)
 
+# RSI
+RSI = ta.rsi(d['close'], length=5)
+RSI.plot()
+plt.title('RSI')
 
+plt.figure()
+d['close'].plot()
+plt.title('Preço')
+
+plt.show()
 
