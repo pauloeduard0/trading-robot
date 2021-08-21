@@ -33,9 +33,11 @@ if not ok:
     print("Asset addition failed ", active)
     mt5.shutdown()
 
-d = mt5.copy_rates_from_pos(active, mt5.TIMEFRAME_M5, 0, 100)
+d = mt5.copy_rates_from_pos(active, mt5.TIMEFRAME_M5, 0, 50)
 d = pd.DataFrame(d)
 d = timestamptodate(d)
+
+print(d)
 
 print(d.ta.indicators())
 
@@ -59,5 +61,9 @@ plt.legend(['MMS 21', 'MM 10', 'Closes'])
 plt.xlabel('Data')
 plt.ylabel("Preço")
 plt.show()
+
+# indexing date
+# d.set_index('time', inplace=True)
+
 
 
