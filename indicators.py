@@ -39,5 +39,6 @@ d = timestamptodate(d)
 print(d.ta.indicators())
 
 print(help(ta.rsi))
+print(help(ta.bbands))
 
 
