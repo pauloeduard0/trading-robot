@@ -35,24 +35,27 @@ if not ok:
 
 point = mt5.symbol_info(active).point
 price = mt5.symbol_info_tick(active).ask
-deviation = 1
-lot = 1
+deviation = 500
+lot = 0.1
 
 request = {
-    "action": mt5.TRADE_ACTION_DEAL,  # Market Order
+    "action": mt5.TRADE_ACTION_DEAL,
     "symbol": active,
+    "volume": lot,
     "type": mt5.ORDER_TYPE_BUY,
     "price": price,
-    "sl": price - 0.1 * point,
-    "tp": price + 0.1 * point,
+    "sl": price - 100 * point,
+    "tp": price + 100 * point,
     "deviation": deviation,
     "magic": 234000,
-    "comment": "BUY Market Order",
+    "comment": "python script open",
     "type_time": mt5.ORDER_TIME_GTC,
-    "type_filling": mt5.ORDER_FILLING_RETURN
+    "type_filling": mt5.ORDER_FILLING_IOC,
 }
 
 result = mt5.order_send(request)
+
+print("1. order_send(): by {} {} lots at {} with deviation={} points".format(active,lot,price,deviation));
 
 print(result)
 
