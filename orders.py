@@ -65,7 +65,7 @@ print(mt5.last_error())
 
 point = mt5.symbol_info(active).point
 price = mt5.symbol_info_tick(active).bid
-deviation = 500
+deviation = 100
 lot = 0.1
 
 request = {
@@ -86,6 +86,8 @@ request = {
 result2 = mt5.order_send(request)
 
 print(result2)
+
+# mt5.Close(active)
 
 print(mt5.last_error())
 

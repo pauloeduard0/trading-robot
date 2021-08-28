@@ -109,6 +109,8 @@ rl = mt5.order_send(request)
 print(mt5.last_error())
 print(rl.retcode)
 
+# mt5.Close(active)
+
 print(mt5.orders_total())
 myOrders = mt5.orders_get()
 print(myOrders[1])
