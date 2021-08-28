@@ -80,7 +80,7 @@ if result.retcode != mt5.TRADE_RETCODE_DONE:
             traderequest_dict = result_dict[field]._asdict()
             for tradereq_filed in traderequest_dict:
                 print(" traderesquest: {}={}".format(tradereq_filed, traderequest_dict[tradereq_filed]))
-    
+
     print("shutfown() and quit")
 
 # Limit
@@ -113,4 +113,13 @@ print(rl.retcode)
 
 print(mt5.orders_total())
 myOrders = mt5.orders_get()
-print(myOrders[1])
+
+ticket = myOrders[0].ticket
+
+request_close = {
+    "order": ticket,  # mt5.orders_get()[1].ticket
+    "action": mt5.TRADE_ACTION_REMOVE
+}
+
+time.sleep(5)
+Result2 = mt5.order_send(request_close)
