@@ -83,3 +83,28 @@ if result.retcode != mt5.TRADE_RETCODE_DONE:
     
     print("shutfown() and quit")
 
+# Limit
+
+point = mt5.symbol_info(active).point
+price = mt5.symbol_info_tick(active).ask - 2000.0
+deviation = 500
+lot = 0.02
+
+request = {
+    "action": mt5.TRADE_ACTION_PENDING,
+    "symbol": active,
+    "volume": lot,
+    "type": mt5.ORDER_TYPE_BUY_LIMIT,
+    "price": price,
+    "sl": 0.,
+    "tp": 0.,
+    "deviation": deviation,
+    "magic": 234000,
+    "comment": "BUT AT MARKET",
+    "type_time": mt5.ORDER_TIME_GTC,
+    "type_filling": mt5.ORDER_FILLING_FOK
+}
+
+rl = mt5.order_send(request)
+print(mt5.last_error())
+print(rl.retcode)
