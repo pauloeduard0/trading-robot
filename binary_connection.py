@@ -96,8 +96,8 @@ request = {
     "volume": lot,
     "type": mt5.ORDER_TYPE_BUY_LIMIT,
     "price": price,
-    "sl": 0.,
-    "tp": 0.,
+    "sl": price - 100000 * point,
+    "tp": price + 100000 * point,
     "deviation": deviation,
     "magic": 234000,
     "comment": "BUT AT MARKET",
@@ -108,3 +108,7 @@ request = {
 rl = mt5.order_send(request)
 print(mt5.last_error())
 print(rl.retcode)
+
+print(mt5.orders_total())
+myOrders = mt5.orders_get()
+print(myOrders[1])
