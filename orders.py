@@ -88,3 +88,4 @@ result2 = mt5.order_send(request)
 print(result2)
 
 print(mt5.last_error())
+

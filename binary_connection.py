@@ -70,6 +70,16 @@ print(result)
 
 print(mt5.last_error())
 
-print(result.retcode)
-
+print("1. order_send(): by {} {} lots at {} with deviation={} points".format(active, lot, price, deviation))
+if result.retcode != mt5.TRADE_RETCODE_DONE:
+    print("2. order_send failed, retcode={}".format(result.retcode))
+    result_dict = result.asdict()
+    for field in result_dict.keys():
+        print("  {}={}".format(field, result_dict[field]))
+        if field == "request":
+            traderequest_dict = result_dict[field]._asdict()
+            for tradereq_filed in traderequest_dict:
+                print(" traderesquest: {}={}".format(tradereq_filed, traderequest_dict[tradereq_filed]))
+    
+    print("shutfown() and quit")
 
