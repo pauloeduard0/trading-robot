@@ -55,7 +55,7 @@ def buy_market(active, tp, sl, lot, desc="Buy Market"):
     print("1. order_send(): by {} {} lots at {} with deviation={} points".format(active, lot, price, deviation))
     if result.retcode != mt5.TRADE_RETCODE_DONE:
         print("2. order_send failed, retcode={}".format(result.retcode))
-        result_dict = result.asdict()
+        result_dict = result._asdict()
         for field in result_dict.keys():
             print("  {}={}".format(field, result_dict[field]))
             if field == "request":
@@ -102,7 +102,7 @@ def sell_market(active, tp, sl, lot, desc="Sell Market"):
     print("1. order_send(): by {} {} lots at {} with deviation={} points".format(active, lot, price, deviation))
     if result.retcode != mt5.TRADE_RETCODE_DONE:
         print("2. order_send failed, retcode={}".format(result.retcode))
-        result_dict = result.asdict()
+        result_dict = result._asdict()
         for field in result_dict.keys():
             print("  {}={}".format(field, result_dict[field]))
             if field == "request":
@@ -149,7 +149,7 @@ def buy_limit(active, entrada, tp, sl, lot, desc="Buy Limit"):
     print("1. order_send(): by {} {} lots at {} with deviation={} points".format(active, lot, price, deviation))
     if result.retcode != mt5.TRADE_RETCODE_DONE:
         print("2. order_send failed, retcode={}".format(result.retcode))
-        result_dict = result.asdict()
+        result_dict = result._asdict()
         for field in result_dict.keys():
             print("  {}={}".format(field, result_dict[field]))
             if field == "request":
@@ -197,7 +197,7 @@ def sell_limit(active, entrada, tp, sl, lot, desc="Sell Limit"):
     print("1. order_send(): by {} {} lots at {} with deviation={} points".format(active, lot, price, deviation))
     if result.retcode != mt5.TRADE_RETCODE_DONE:
         print("2. order_send failed, retcode={}".format(result.retcode))
-        result_dict = result.asdict()
+        result_dict = result._asdict()
         for field in result_dict.keys():
             print("  {}={}".format(field, result_dict[field]))
             if field == "request":
@@ -220,7 +220,7 @@ def cancel_order():
 
     if result.retcode != mt5.TRADE_RETCODE_DONE:
         print("2. order_send failed, retcode={}".format(result.retcode))
-        result_dict = result.asdict()
+        result_dict = result._asdict()
         for field in result_dict.keys():
             print("  {}={}".format(field, result_dict[field]))
             if field == "request":
