@@ -232,6 +232,11 @@ def cancel_order():
     return result
 
 
+def close_position(active):
+    resp = mt5.Close(active)
+    return resp
+
+
 if mt5.initialize():
     print('Login sucess')
 else:
