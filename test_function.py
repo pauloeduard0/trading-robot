@@ -250,7 +250,11 @@ if not ok:
     mt5.shutdown()
 
 # active, entrada, tp, sl, lot
-R1 = buy_market(active, 5000.0, 5000.0, 0.01)
-print(R1)
+# R1 = buy_market(active, 5000.0, 5000.0, 0.01)
+# print(R1)
+
+# close_position(active)
+
+R2 = sell_market(active, 5000.0, 5000.0, 0.01)
 
 close_position(active)
