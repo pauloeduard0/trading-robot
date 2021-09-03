@@ -182,7 +182,7 @@ def sell_limit(active, entrada, tp, sl, lot, desc="Sell Limit"):
         "symbol": active,
         "volume": float(lot),
         "type": mt5.ORDER_TYPE_SELL_LIMIT,
-        "price": price,
+        "price": entrada,
         "sl": float(SL),
         "tp": float(TP),
         "deviation": deviation,
@@ -255,6 +255,14 @@ if not ok:
 
 # close_position(active)
 
-R2 = sell_market(active, 5000.0, 5000.0, 0.01)
+# R2 = sell_market(active, 5000.0, 5000.0, 0.01)
 
-close_position(active)
+# close_position(active)
+
+x = 825000.25
+R3 = buy_limit(active, x, 5000.0, 5000.0, 0.01)
+
+y = 861710.0
+R4 = sell_limit(active, y, 5000.0, 5000.0, 0.01)
+
+cancel_order()
