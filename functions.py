@@ -209,6 +209,29 @@ def sell_limit(active, entrada, tp, sl, lot, desc="Sell Limit"):
     return result
 
 
+def cancel_order():
+
+    request_cancel = {
+        "order": mt5.orders_get()[0].ticket,
+        "action": mt5.TRADE_ACTION_REMOVE
+    }
+
+    result = mt5.order_send(request_cancel)
+
+    if result.retcode != mt5.TRADE_RETCODE_DONE:
+        print("2. order_send failed, retcode={}".format(result.retcode))
+        result_dict = result.asdict()
+        for field in result_dict.keys():
+            print("  {}={}".format(field, result_dict[field]))
+            if field == "request":
+                traderequest_dict = result_dict[field]._asdict()
+                for tradereq_filed in traderequest_dict:
+                    print(" traderesquest: {}={}".format(tradereq_filed, traderequest_dict[tradereq_filed]))
+        # print("shutfown() and quit")
+        # mt5.shutdown()
+    return result
+
+
 if mt5.initialize():
     print('Login sucess')
 else:
