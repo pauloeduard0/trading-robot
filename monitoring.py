@@ -27,24 +27,33 @@ if mt5.initialize():
 else:
     print('Login error', mt5.last_error())
 
-active = 'Volatility 75 Index'
+active = 'EURUSD'
 
 ok = mt5.symbol_select(active, True)
-print(ok)
 
 if not ok:
     print("Asset addition failed ", active)
     mt5.shutdown()
 
-i = 0
+cont = 0
 
-while i <= 2:
-    i += 1
-    print(i)
+while True:
+
+    region = timezone("Etc/UTC")
+    d = datetime.now(tz=timezone('America/Sao_Paulo'))
+    print(d)
+
+    minutes = d.minute
+    hours = d.hour
+    seconds = d.second
+
+    if seconds == 59:
+        cont += 1
+        c = mt5.copy_rates_from_pos(active, mt5.TIMEFRAME_M1, 0, 20)
+        c = pd.DataFrame(c)
+        c = timestamptodate(c)
+
+        print(c)
+        print('New M1 Candle = ', cont)
+
     time.sleep(1)
-
-d = datetime.now(tz=timezone('America/Sao_Paulo'))
-print(d)
-print(type(d))
-print(d.minute)
-print(d.second)
