@@ -7,6 +7,8 @@ import pytz
 import cufflinks as cf
 import plotly
 import matplotlib.pyplot as plt
+from datetime import datetime
+from pytz import timezone
 
 
 def timestamptodate(df):
@@ -47,7 +49,7 @@ def buy_market(active, tp, sl, lot, desc="Buy Market"):
         "magic": 234000,
         "comment": desc,
         "type_time": mt5.ORDER_TIME_GTC,
-        "type_filling": mt5.ORDER_FILLING_IOC,
+        "type_filling": mt5.ORDER_FILLING_FOK,
     }
 
     result = mt5.order_send(request)
@@ -94,7 +96,7 @@ def sell_market(active, tp, sl, lot, desc="Sell Market"):
         "magic": 234000,
         "comment": desc,
         "type_time": mt5.ORDER_TIME_GTC,
-        "type_filling": mt5.ORDER_FILLING_IOC,
+        "type_filling": mt5.ORDER_FILLING_FOK,
     }
 
     result = mt5.order_send(request)
@@ -210,7 +212,6 @@ def sell_limit(active, entrada, tp, sl, lot, desc="Sell Limit"):
 
 
 def cancel_order():
-
     request_cancel = {
         "order": mt5.orders_get()[0].ticket,
         "action": mt5.TRADE_ACTION_REMOVE
@@ -249,8 +250,8 @@ def positioned(active):
 
 
 def can_trade(io, lo):
-    filter1 = datetime.now().strtime("%H:%M:%S") >= io
-    filter2 = datetime.now().strtime("%H:%M:%S") >= lo
+    filter1 = datetime.now().strftime("%H:%M:%S") >= io
+    filter2 = datetime.now().strftime("%H:%M:%S") <= lo
     resp = filter1 & filter2
     return resp
 
@@ -260,7 +261,7 @@ if mt5.initialize():
 else:
     print('Login error', mt5.last_error())
 
-active = 'PETR4'
+active = 'Volatility 75 Index'
 
 ok = mt5.symbol_select(active, True)
 
@@ -269,20 +270,77 @@ if not ok:
     mt5.shutdown()
 
 # Hours
-initial_operation = '10:30'
+initial_operation = '10:00'
 limit_operation = '16:30'
 limit_close_postion = '16:45'
 
 # IFR
-sobre_compra = 70
-sobre_venda = 30
+sobre_compra = 52
+sobre_venda = 48
 period_IFR = 7
 
 # parameters
-stoploss = 0.3
-takeprofit = 0.4
+lotes = 0.02
+stoploss = 10000.0
+takeprofit = 10000.0
+
+versao_EA = '1.00'
+contm = 0  # contador de minutos operacionais do robô
+position = ''
 
 while True:
-    if can_trade(initial_operation, limit_operation):
-        print()
+    region = timezone("Etc/UTC")
+    d = datetime.now(tz=timezone('America/Sao_Paulo'))
 
+    if can_trade(initial_operation, limit_operation):
+        # d = datetime.now()
+        m = d.minute
+        h = d.hour
+        s = d.second
+
+        if not positioned(active):
+            print("Waiting... Date/Time = ", d)
+        else:
+            tick = mt5.symbol_info_tick(active).last
+            if position == 'SELL':
+                print(s, ' - SELL : Price = ', tick, ", TP: ", v.request.tp, ", SL: ", v.request.sl),
+            if position == 'BUY':
+                print(s, ' - BUY : Price = ', tick, ", TP: ", c.request.tp, ", SL: ", c.request.sl)
+
+        if s == 59:
+            contm += 1
+
+            c2 = mt5.copy_rates_from_pos(active, mt5.TIMEFRAME_M1, 0, period_IFR + 5)
+            c2 = pd.DataFrame(c2)
+            c2 = timestamptodate(c2)
+
+            IFR = ta.rsi(c2['close'], length=period_IFR)
+
+            if (IFR.iloc[-1] >= sobre_compra) & (positioned(active) == False):
+                print('Sell! -> IFR >= ', sobre_compra)
+                v = sell_market(active, takeprofit, stoploss, lotes)
+                position = 'SELL'
+
+            if (IFR.iloc[-1] <= sobre_venda) & (positioned(active) == False):
+                print('BUY! -> IFR <= ', sobre_venda)
+                c = buy_market(active, takeprofit, stoploss, lotes)
+                position = 'BUY'
+
+            print('IFR = ', IFR.iloc[-1], ", Sobre COMPRA: ", sobre_compra, ", Sobre VENDA: ", sobre_venda)
+
+        if positioned(active) & (d.strftime("%H:%M:%S") >= limit_close_postion):
+            close_position(active)
+            posicao = ''
+            print('Close Position')
+
+        time.sleep(1)
+
+    else:
+        print('Attention! Out of Hours', datetime.now())
+
+        if positioned(active) & (d.strftime("%H:%M:%S") >= limit_close_postion):
+            close_position(active)
+            posicao = ''
+            print('Close Position')
+
+        time.sleep(10)
