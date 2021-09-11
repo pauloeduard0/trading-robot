@@ -248,6 +248,13 @@ def positioned(active):
     return pos
 
 
+def can_trade(io, lo):
+    filter1 = datetime.now().strtime("%H:%M:%S") >= io
+    filter2 = datetime.now().strtime("%H:%M:%S") >= lo
+    resp = filter1 & filter2
+    return resp
+
+
 if mt5.initialize():
     print('Login sucess')
 else:
@@ -275,5 +282,7 @@ period_IFR = 7
 stoploss = 0.3
 takeprofit = 0.4
 
-datetime.now().strftime("%H:%M:%S")
+while True:
+    if can_trade(initial_operation, limit_operation):
+        print()
 
